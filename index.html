@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Harsiddhi Krupa Cabs</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 520px;
+      color: #fff;
+      transition: 0.3s ease;
+    }
+
+    .form-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      color: #ffffff;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+
+    select,
+    input,
+    textarea,
+    button {
+      width: 100%;
+      padding: 0.85rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    select,
+    input,
+    textarea {
+      background-color: rgba(1, 1, 1, 0.2);
+      color: #fff;
+      appearance: none;
+    }
+
+    select option {
+      color: #000;
+      background-color: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      background-image: linear-gradient(to right, #43cea2, #185a9d);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.4);
+      color: #000;
+    }
+
+    .form-step {
+      display: none;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .contact-note,
+    .contact-info {
+      text-align: center;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      color: #f0f0f0;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="form-title">Harsiddhi Krupa Cabs</div>
+
+    <!-- Step 1 -->
+    <div class="form-step active" id="step1">
+      <h2>Select Language</h2>
+      <select id="languageSelect">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="gu">ગુજરાતી</option>
+      </select>
+      <button onclick="nextStep()">Next</button>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="form-step" id="step2">
+      <h2 id="formTitle">Form</h2>
+      <input type="text" id="nameInput" placeholder="">
+      <input type="tel" id="mobileInput" placeholder="">
+      <input type="text" id="fromLocationInput" placeholder="">
+      <input type="text" id="toLocationInput" placeholder="">
+      <input type="date" id="dateInput">
+      <input type="time" id="timeInput">
+      <textarea id="addressInput" rows="3" placeholder=""></textarea>
+      <input type="number" id="passengerInput" placeholder="">
+      <select id="vehicleSelect">
+        <option value="">Select Vehicle</option>
+        <option value="Auto Rickshaw">Auto Rickshaw</option>
+        <option value="Eeco">Eeco</option>
+        <option value="Innova">Innova</option>
+        <option value="Ertiga">Ertiga</option>
+      </select>
+
+      <div class="contact-info">
+        📞 <strong>Contact Us: <span id="staticContact">9054098463</span></strong>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-secondary" onclick="previousStep()">Previous</button>
+        <button onclick="submitForm()" id="submitBtn">Submit</button>
+      </div>
+
+      <div class="contact-note" id="contactNote"></div>
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        title: "User Information",
+        namePlaceholder: "Enter your name",
+        mobilePlaceholder: "Enter your mobile number",
+        fromPlaceholder: "From location",
+        toPlaceholder: "To location",
+        addressPlaceholder: "Pickup address",
+        passengerPlaceholder: "Number of passengers",
+        vehiclePlaceholder: "Select vehicle",
+        submit: "Submit"
+      },
+      hi: {
+        title: "उपयोगकर्ता जानकारी",
+        namePlaceholder: "अपना नाम दर्ज करें",
+        mobilePlaceholder: "अपना मोबाइल नंबर दर्ज करें",
+        fromPlaceholder: "स्थान से",
+        toPlaceholder: "स्थान तक",
+        addressPlaceholder: "पिकअप पता",
+        passengerPlaceholder: "यात्रियों की संख्या",
+        vehiclePlaceholder: "वाहन चुनें",
+        submit: "जमा करें"
+      },
+      gu: {
+        title: "વપરાશકર્તા માહિતી",
+        namePlaceholder: "તમારું નામ દાખલ કરો",
+        mobilePlaceholder: "તમારો મોબાઈલ નંબર દાખલ કરો",
+        fromPlaceholder: "ક્યાંથી",
+        toPlaceholder: "ક્યાં સુધી",
+        addressPlaceholder: "પિકઅપ સરનામું",
+        passengerPlaceholder: "મુસાફરોની સંખ્યા",
+        vehiclePlaceholder: "વાહન પસંદ કરો",
+        submit: "મોકલવું"
+      }
+    };
+
+    let selectedLang = 'en';
+
+    function nextStep() {
+      selectedLang = document.getElementById("languageSelect").value;
+      const t = translations[selectedLang];
+
+      document.getElementById("formTitle").innerText = t.title;
+      document.getElementById("nameInput").placeholder = t.namePlaceholder;
+      document.getElementById("mobileInput").placeholder = t.mobilePlaceholder;
+      document.getElementById("fromLocationInput").placeholder = t.fromPlaceholder;
+      document.getElementById("toLocationInput").placeholder = t.toPlaceholder;
+      document.getElementById("addressInput").placeholder = t.addressPlaceholder;
+      document.getElementById("passengerInput").placeholder = t.passengerPlaceholder;
+      document.getElementById("vehicleSelect").options[0].text = t.vehiclePlaceholder;
+      document.getElementById("submitBtn").innerText = t.submit;
+
+      document.getElementById("step1").classList.remove("active");
+      document.getElementById("step2").classList.add("active");
+    }
+
+    function previousStep() {
+      document.getElementById("step2").classList.remove("active");
+      document.getElementById("step1").classList.add("active");
+    }
+
+    function convertToAMPM(time24) {
+      const [hour, minute] = time24.split(":");
+      let hourNum = parseInt(hour);
+      const ampm = hourNum >= 12 ? "PM" : "AM";
+      hourNum = hourNum % 12 || 12;
+      return `${hourNum}:${minute} ${ampm}`;
+    }
+
+    function submitForm() {
+      const name = document.getElementById("nameInput").value.trim();
+      const mobile = document.getElementById("mobileInput").value.trim();
+      const from = document.getElementById("fromLocationInput").value.trim();
+      const to = document.getElementById("toLocationInput").value.trim();
+      const date = document.getElementById("dateInput").value;
+      const time24 = document.getElementById("timeInput").value;
+      const time = convertToAMPM(time24);
+      const address = document.getElementById("addressInput").value.trim();
+      const passengers = document.getElementById("passengerInput").value.trim();
+      const vehicle = document.getElementById("vehicleSelect").value;
+
+      if (!name || !mobile || !from || !to || !date || !time24 || !address || !passengers || !vehicle) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      const booking = {
+        id: Date.now(),
+        name, mobile, from, to, date, time, address, passengers, vehicle,
+        status: "Pending"
+      };
+
+      const existing = JSON.parse(localStorage.getItem("bookings") || "[]");
+      existing.push(booking);
+      localStorage.setItem("bookings", JSON.stringify(existing));
+
+      alert("✅ Booking submitted successfully!");
+
+      // Optional: Reset form
+      window.location.reload();
+    }
+  </script>
+
+</body>
+</html>
